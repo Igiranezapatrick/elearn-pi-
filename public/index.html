@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PI Elearning | Next-Gen E-Learning by Pi Tech</title>
+
+  <!-- Favicon link -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  
+  <meta name="description" content="Production-ready e-learning ecosystem powered by Bika Database. Manage lessons, track assignments, and collaborate seamlessly.">
+  <meta name="author" content="Pi Tech">
+
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --accent: #10b981;
+      --dark: #0f172a;
+      --dark-card: #1e293b;
+      --light-bg: #f8fafc;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--light-bg); color: var(--text-main); line-height: 1.6; }
+
+    /* Navigation */
+    nav { background: #ffffff; border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    .brand { font-size: 22px; font-weight: 800; color: var(--dark); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .brand span { color: var(--primary); }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 15px; font-weight: 500; transition: 0.15s; }
+    .nav-links a:hover { color: var(--primary); }
+
+    /* Buttons */
+    .btn { padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+    .btn-outline:hover { background: #f1f5f9; }
+    .btn-accent { background: var(--accent); color: #fff; }
+
+    /* Layout Containers */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .hidden { display: none !important; }
+
+    /* Hero Section */
+    .hero { padding: 70px 0 60px; background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%); }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .hero-content h1 { font-size: 46px; line-height: 1.2; color: var(--dark); margin-bottom: 20px; font-weight: 800; }
+    .hero-content p { font-size: 18px; color: var(--text-muted); margin-bottom: 32px; }
+    .hero-stats { display: flex; gap: 32px; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .stat-item h3 { font-size: 26px; color: var(--primary); font-weight: 700; }
+    .stat-item p { font-size: 13px; color: var(--text-muted); margin: 0; }
+    .hero-image-wrap { border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15); border: 1px solid var(--border); }
+    .hero-image-wrap img { width: 100%; height: auto; display: block; object-fit: cover; }
+
+    /* Features / About Section */
+    .section { padding: 80px 0; }
+    .section-title { text-align: center; margin-bottom: 48px; }
+    .section-title h2 { font-size: 32px; color: var(--dark); margin-bottom: 12px; }
+    .section-title p { color: var(--text-muted); font-size: 16px; max-width: 600px; margin: 0 auto; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
+    .card { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 32px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .card h3 { font-size: 20px; color: var(--dark); margin: 16px 0 8px; }
+    .card p { color: var(--text-muted); font-size: 14px; }
+
+    /* Auth Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 200; }
+    .modal-box { background: #fff; width: 100%; max-width: 440px; border-radius: 12px; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .modal-header h3 { font-size: 22px; color: var(--dark); }
+    .close-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-muted); }
+    
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); }
+
+    /* Dashboard Layout */
+    .dashboard-header { background: #ffffff; border-bottom: 1px solid var(--border); padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .dashboard-content { padding: 32px; max-width: 1200px; margin: 0 auto; }
+    .panel-card { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+    .tag { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+    .tag-teacher { background: #e0f2fe; color: #0369a1; }
+    .tag-student { background: #dcfce7; color: #15803d; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: #f8fafc; font-weight: 600; color: var(--text-muted); }
+
+    /* Footer */
+    footer { background: var(--dark); color: #94a3b8; padding: 60px 0 30px; margin-top: 60px; font-size: 14px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer-brand { font-size: 20px; font-weight: 800; color: #ffffff; margin-bottom: 12px; }
+    .footer-bottom { border-top: 1px solid #334155; padding-top: 24px; text-align: center; font-size: 13px; }
+
+    /* Notifications */
+    #toast { position: fixed; bottom: 24px; right: 24px; background: var(--dark); color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; opacity: 0; pointer-events: none; transition: 0.2s; z-index: 300; }
+    #toast.show { opacity: 1; pointer-events: auto; }
+
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav id="navbar">
+    <div class="brand" onclick="navigateHome()">
+      PI Elearning <span>.</span>
+    </div>
+    <div class="nav-links" id="publicNav">
+      <a href="#about">About Platform</a>
+      <a href="#features">Features</a>
+      <a href="#creator">Creator</a>
+      <button class="btn btn-outline" onclick="openAuthModal('login')">Log In</button>
+      <button class="btn btn-primary" onclick="openAuthModal('signup')">Get Started</button>
+    </div>
+    <div class="nav-links hidden" id="userNav">
+      <span id="navUserBadge" class="tag"></span>
+      <span id="navUserName" style="font-weight: 600;"></span>
+      <button class="btn btn-outline" onclick="logout()">Log Out</button>
+    </div>
+  </nav>
+
+  <!-- ================= LANDING PAGE VIEW ================= -->
+  <div id="landingView">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <h1>Empowering Modern Education with Real-Time Learning</h1>
+          <p>
+            SomaLearn connects passionate educators and motivated students across Rwanda. Distribute coursework, manage assignments, and record evaluations effortlessly.
+          </p>
+          <div style="display: flex; gap: 14px;">
+            <button class="btn btn-primary" onclick="openAuthModal('signup')">Start Learning Free</button>
+            <a href="#about" class="btn btn-outline" style="text-decoration:none;">Explore Platform</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <h3>100%</h3>
+              <p>Cloud Synchronized</p>
+            </div>
+            <div class="stat-item">
+              <h3>Bika DB</h3>
+              <p>Flat-File Architecture</p>
+            </div>
+            <div class="stat-item">
+              <h3>24/7</h3>
+              <p>Offline-First Access</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-image-wrap">
+          <Image src="learners.jpg" alt="African students collaborating on laptops in a modern educational environment" caption="Modern digital e-learning in action" />
+        </div>
+      </div>
+    </section>
+
+    <!-- About Platform Section -->
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section-title">
+          <h2>Why PI Elearning?</h2>
+          <p>Built from the ground up to solve digital classroom distribution challenges with zero unnecessary complexity.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>Designed for Teachers</h3>
+            <p>Publish curriculum modules, assign project deadlines, and assess student submissions from an intuitive control center.</p>
+          </div>
+          <div class="card">
+            <h3>Student-First Workspaces</h3>
+            <p>Direct access to enrolled course materials, structured homework briefs, and submission tracking with instant confirmation.</p>
+          </div>
+          <div class="card">
+            <h3>Powered by Bika Database</h3>
+            <p>Eliminates heavy traditional database overhead using isolated, fast JSON endpoints engineered by Pi Tech.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Creator Spotlight -->
+    <section id="creator" class="section" style="background: #ffffff; border-top: 1px solid var(--border);">
+      <div class="container" style="max-width: 800px; text-align: center;">
+        <h2 style="font-size: 28px; margin-bottom: 12px;">Engineered by Pi Tech</h2>
+        <p style="color: var(--text-muted); font-size: 16px; margin-bottom: 24px;">
+          Pi Tech is dedicated to building performant, offline-resilient, and local-first software tools for African developers, schools, and institutions.
+        </p>
+        <span class="tag tag-teacher" style="font-size: 13px; padding: 6px 16px;">Flagship E-Learning Initiative 2026</span>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-grid">
+        <div>
+          <div class="footer-brand">SomaLearn</div>
+          <p style="max-width: 320px;">Empowering TVET institutes and high schools through decentralized e-learning solutions.</p>
+        </div>
+        <div>
+          <h4 style="color: #fff; margin-bottom: 14px;">Platform</h4>
+          <p><a href="#about" style="color: inherit; text-decoration: none;">About</a></p>
+          <p><a href="#creator" style="color: inherit; text-decoration: none;">Pi Tech Engineering</a></p>
+        </div>
+        <div>
+          <h4 style="color: #fff; margin-bottom: 14px;">Database</h4>
+          <p>Powered by Bika BaaS</p>
+          <p>Kigali, Rwanda</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 SomaLearn. Developed by Pi Tech. All rights reserved.
+      </div>
+    </footer>
+  </div>
+
+  <!-- ================= AUTHENTICATION MODAL ================= -->
+  <div id="authModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="authModalTitle">Sign Up for SomaLearn</h3>
+        <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+      </div>
+
+      <form id="authForm" onsubmit="handleAuthSubmit(event)">
+        <div class="form-group" id="fullNameGroup">
+          <label>Full Name</label>
+          <input type="text" id="authFullName" placeholder="e.g. Patrick Mugabo">
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="authEmail" placeholder="you@domain.rw" required>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="authPassword" placeholder="••••••••" required>
+        </div>
+
+        <div class="form-group" id="roleGroup">
+          <label>Select Role</label>
+          <select id="authRole">
+            <option value="student">Student</option>
+            <option value="teacher">Teacher / Instructor</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;" id="authSubmitBtn">Create Account</button>
+      </form>
+
+      <p style="font-size: 13px; text-align: center; color: var(--text-muted); margin-top: 16px;">
+        <span id="authTogglePrompt">Already have an account?</span>
+        <a href="javascript:void(0)" onclick="toggleAuthMode()" style="color: var(--primary); font-weight: 600; text-decoration: none;" id="authToggleLink">Log In</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ================= DASHBOARD VIEW ================= -->
+  <div id="dashboardView" class="hidden">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <div>
+        <h2>PI ELearning Portal</h2>
+        <small style="color: var(--text-muted);">Signed in as <strong id="dashUserName"></strong></small>
+      </div>
+      <div id="dashRoleAction"></div>
+    </div>
+
+    <div class="dashboard-content">
+      <!-- TEACHER VIEW -->
+      <div id="teacherPortal" class="hidden">
+        <div class="panel-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Create a New Course Module</h3>
+          </div>
+          <form id="createCourseForm" onsubmit="handleCreateCourse(event)" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 12px; margin-top: 16px;">
+            <input type="text" id="courseTitle" placeholder="Course Title (e.g. Mobile App Dev with Flutter)" required>
+            <input type="text" id="courseCode" placeholder="Code (e.g. SOD-401)" required>
+            <button type="submit" class="btn btn-primary">+ Add Course</button>
+          </form>
+        </div>
+
+        <div class="panel-card">
+          <h3>Your Courses & Assignments</h3>
+          <div id="teacherCoursesContainer" style="margin-top: 16px;">
+            <p style="color: var(--text-muted);">Loading courses from Bika Database...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STUDENT VIEW -->
+      <div id="studentPortal" class="hidden">
+        <div class="panel-card">
+          <h3>Enrolled Course Work</h3>
+          <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Browse active lessons and submit completed deliverables.</p>
+          <div id="studentCoursesContainer">
+            <p style="color: var(--text-muted);">Loading assignments from Bika Database...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="bika-config.js"></script>
+  <script>
+    let currentAuthMode = 'signup';
+    let currentUser = JSON.parse(localStorage.getItem('somalearn_user')) || null;
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // Modal Control
+    function openAuthModal(mode) {
+      currentAuthMode = mode;
+      const isSignup = mode === 'signup';
+      document.getElementById('authModalTitle').innerText = isSignup ? 'Sign Up for SomaLearn' : 'Log In to SomaLearn';
+      document.getElementById('authSubmitBtn').innerText = isSignup ? 'Create Account' : 'Log In';
+      document.getElementById('fullNameGroup').classList.toggle('hidden', !isSignup);
+      document.getElementById('roleGroup').classList.toggle('hidden', !isSignup);
+      document.getElementById('authTogglePrompt').innerText = isSignup ? 'Already have an account?' : "Don't have an account?";
+      document.getElementById('authToggleLink').innerText = isSignup ? 'Log In' : 'Sign Up';
+      document.getElementById('authModal').classList.remove('hidden');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.add('hidden');
+    }
+
+    function toggleAuthMode() {
+      openAuthModal(currentAuthMode === 'signup' ? 'login' : 'signup');
+    }
+
+    // Simple hash for password demo storage
+    async function hashPassword(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Authentication Handler
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('authEmail').value.trim().toLowerCase();
+      const password = document.getElementById('authPassword').value;
+      const passwordHash = await hashPassword(password);
+
+      try {
+        if (currentAuthMode === 'signup') {
+          const fullName = document.getElementById('authFullName').value.trim();
+          const role = document.getElementById('authRole').value;
+
+          const existingUsers = await bika.from('users').select({ email });
+          if (existingUsers && existingUsers.length > 0) {
+            showToast('An account with this email already exists.');
+            return;
+          }
+
+          const newUser = await bika.from('users').insert({
+            fullName,
+            email,
+            passwordHash,
+            role
+          });
+
+          currentUser = { id: newUser.id, fullName: newUser.fullName, email: newUser.email, role: newUser.role };
+          localStorage.setItem('somalearn_user', JSON.stringify(currentUser));
+          showToast('Account created successfully!');
+        } else {
+          const matched = await bika.from('users').select({ email, passwordHash });
+          if (!matched || matched.length === 0) {
+            showToast('Invalid email or password.');
+            return;
+          }
+          const user = matched[0];
+          currentUser = { id: user.id, fullName: user.fullName, email: user.email, role: user.role };
+          localStorage.setItem('somalearn_user', JSON.stringify(currentUser));
+          showToast('Welcome back, ' + currentUser.fullName);
+        }
+
+        closeAuthModal();
+        renderSession();
+      } catch (err) {
+        showToast(err.message);
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('somalearn_user');
+      currentUser = null;
+      renderSession();
+      showToast('Logged out.');
+    }
+
+    function navigateHome() {
+      if (currentUser) {
+        renderSession();
+      } else {
+        document.getElementById('dashboardView').classList.add('hidden');
+        document.getElementById('landingView').classList.remove('hidden');
+      }
+    }
+
+    // Course Creation (Teachers)
+    async function handleCreateCourse(e) {
+      e.preventDefault();
+      const title = document.getElementById('courseTitle').value.trim();
+      const code = document.getElementById('courseCode').value.trim();
+
+      try {
+        await bika.from('courses').insert({
+          title,
+          code,
+          teacherId: currentUser.id,
+          teacherName: currentUser.fullName
+        });
+
+        document.getElementById('createCourseForm').reset();
+        showToast(`Course ${code} published!`);
+        loadTeacherCourses();
+      } catch (err) {
+        showToast('Error creating course: ' + err.message);
+      }
+    }
+
+    // Post an Assignment
+    async function promptAddAssignment(courseId) {
+      const title = prompt('Assignment Title:');
+      if (!title) return;
+      const dueDate = prompt('Due Date (e.g. Friday 5:00 PM):', 'Next Friday');
+
+      try {
+        await bika.from('assignments').insert({
+          courseId,
+          title,
+          dueDate: dueDate || 'TBD',
+          submissions: []
+        });
+        showToast('Assignment added to course!');
+        loadTeacherCourses();
+      } catch (err) {
+        showToast(err.message);
+      }
+    }
+
+    // Load Teacher Data
+    async function loadTeacherCourses() {
+      const container = document.getElementById('teacherCoursesContainer');
+      try {
+        const courses = await bika.from('courses').select({ teacherId: currentUser.id });
+        const assignments = await bika.from('assignments').select();
+
+        if (!courses || courses.length === 0) {
+          container.innerHTML = '<p style="color:var(--text-muted)">You haven\'t published any courses yet.</p>';
+          return;
+        }
+
+        container.innerHTML = '';
+        courses.forEach(c => {
+          const courseAssignments = (assignments || []).filter(a => a.courseId === c.id);
+          const div = document.createElement('div');
+          div.style = 'border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 12px;';
+          div.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h4>${c.title} <span class="tag tag-teacher">${c.code}</span></h4>
+              <button class="btn btn-outline" style="font-size:12px; padding:4px 10px;" onclick="promptAddAssignment('${c.id}')">+ Add Assignment</button>
+            </div>
+            <div style="margin-top: 10px; font-size: 13px;">
+              <strong>Assignments:</strong>
+              ${courseAssignments.length === 0 
+                ? '<span style="color:var(--text-muted)"> No assignments posted yet.</span>' 
+                : `<ul style="margin: 6px 0 0 20px;">${courseAssignments.map(a => `<li>${a.title} (Due: ${a.dueDate}) — <em>${(a.submissions || []).length} submissions</em></li>`).join('')}</ul>`
+              }
+            </div>
+          `;
+          container.appendChild(div);
+        });
+      } catch (err) {
+        container.innerHTML = '<p style="color:red">Failed to load courses from Bika.</p>';
+      }
+    }
+
+    // Load Student Data & Submission
+    async function loadStudentCourses() {
+      const container = document.getElementById('studentCoursesContainer');
+      try {
+        const courses = await bika.from('courses').select();
+        const assignments = await bika.from('assignments').select();
+
+        if (!courses || courses.length === 0) {
+          container.innerHTML = '<p style="color:var(--text-muted)">No active courses found on the platform.</p>';
+          return;
+        }
+
+        container.innerHTML = '';
+        courses.forEach(c => {
+          const courseAssignments = (assignments || []).filter(a => a.courseId === c.id);
+          const div = document.createElement('div');
+          div.style = 'border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 16px; background:#fff;';
+          div.innerHTML = `
+            <h3>${c.title} <span class="tag tag-student">${c.code}</span></h3>
+            <p style="color:var(--text-muted); font-size:13px; margin: 4px 0 12px;">Instructor: ${c.teacherName}</p>
+            <div>
+              <strong>Available Assignments:</strong>
+              ${courseAssignments.length === 0 
+                ? '<p style="color:var(--text-muted); font-size:13px; margin-top:4px;">No pending assignments.</p>' 
+                : courseAssignments.map(a => {
+                    const submitted = (a.submissions || []).some(s => s.studentId === currentUser.id);
+                    return `
+                      <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px 14px; border-radius:6px; margin-top:8px;">
+                        <div>
+                          <strong>${a.title}</strong> <span style="font-size:12px; color:var(--text-muted);">(Due: ${a.dueDate})</span>
+                        </div>
+                        ${submitted 
+                          ? '<span class="tag tag-student">Submitted</span>' 
+                          : `<button class="btn btn-primary" style="font-size:12px; padding:4px 10px;" onclick="submitAssignment('${a.id}')">Submit Work</button>`
+                        }
+                      </div>
+                    `;
+                  }).join('')
+              }
+            </div>
+          `;
+          container.appendChild(div);
+        });
+      } catch (err) {
+        container.innerHTML = '<p style="color:red">Could not load assignments.</p>';
+      }
+    }
+
+    // Submit Student Work
+    async function submitAssignment(assignmentId) {
+      const workLink = prompt('Enter your project repository or document link (e.g. GitHub or Google Drive link):');
+      if (!workLink) return;
+
+      try {
+        const [assignment] = await bika.from('assignments').select({ id: assignmentId });
+        const submissions = assignment.submissions || [];
+        submissions.push({
+          studentId: currentUser.id,
+          studentName: currentUser.fullName,
+          workLink,
+          submittedAt: new Date().toISOString()
+        });
+
+        await bika.from('assignments').update(assignmentId, { submissions });
+        showToast('Assignment submitted successfully!');
+        loadStudentCourses();
+      } catch (err) {
+        showToast('Submission error: ' + err.message);
+      }
+    }
+
+    // Render active session view
+    function renderSession() {
+      const isAuth = !!currentUser;
+      document.getElementById('publicNav').classList.toggle('hidden', isAuth);
+      document.getElementById('userNav').classList.toggle('hidden', !isAuth);
+      document.getElementById('landingView').classList.toggle('hidden', isAuth);
+      document.getElementById('dashboardView').classList.toggle('hidden', !isAuth);
+
+      if (isAuth) {
+        document.getElementById('navUserName').innerText = currentUser.fullName;
+        document.getElementById('dashUserName').innerText = `${currentUser.fullName} (${currentUser.role})`;
+        
+        const badge = document.getElementById('navUserBadge');
+        badge.innerText = currentUser.role;
+        badge.className = `tag tag-${currentUser.role}`;
+
+        const isTeacher = currentUser.role === 'teacher';
+        document.getElementById('teacherPortal').classList.toggle('hidden', !isTeacher);
+        document.getElementById('studentPortal').classList.toggle('hidden', isTeacher);
+
+        if (isTeacher) {
+          loadTeacherCourses();
+        } else {
+          loadStudentCourses();
+        }
+      }
+    }
+
+    // Initialize session state on page load
+    renderSession();
+  </script>
+</body>
+</html>
