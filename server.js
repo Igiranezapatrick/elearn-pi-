@@ -50,6 +50,17 @@ app.get('/*splat', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`🔒 SomaLearn running with secured credentials at http://localhost:${PORT}`);
+// Fallback to serve the frontend
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+// Run standalone server when executed directly (node server.js)
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🔒 PI Elearning running on http://localhost:${PORT}`);
+  });
+}
+
+// Required by Vercel serverless runtime
+module.exports = app;
