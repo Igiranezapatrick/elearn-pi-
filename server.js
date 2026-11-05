@@ -23,6 +23,11 @@ app.all('/api/bika/:table', async (req, res) => {
   const queryString = new URLSearchParams(req.query).toString();
   const targetUrl = `${BIKA_BASE_URL}/rest/v1/${table}${queryString ? '?' + queryString : ''}`;
 
+  // Force fresh network lookups
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+
   try {
     const fetchOptions = {
       method: req.method,
