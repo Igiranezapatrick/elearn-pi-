@@ -94,6 +94,29 @@
     th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
     th { background: #f8fafc; font-weight: 600; color: var(--text-muted); }
 
+    /* Button Loading State */
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  animation: bika-spin 0.7s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes bika-spin {
+  to {
+    transform: rotate(360deg);
+  }
+} 
+
     /* Footer */
     footer { background: var(--dark); color: #94a3b8; padding: 60px 0 30px; margin-top: 60px; font-size: 14px; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
@@ -351,6 +374,19 @@
       openAuthModal(currentAuthMode === 'signup' ? 'login' : 'signup');
     }
 
+    function setButtonLoading(buttonElement, loadingText = 'Processing...') {
+      const originalHtml = buttonElement.innerHTML;
+      buttonElement.disabled = true;
+      buttonElement.innerHTML = `<span class="spinner"></span> <span>${loadingText}</span>`;
+    
+      return {
+        restore: () => {
+          buttonElement.disabled = false;
+          buttonElement.innerHTML = originalHtml;
+        }
+      };
+    }
+
     // Simple hash for password demo storage
     async function hashPassword(str) {
       const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
@@ -360,6 +396,8 @@
     // Authentication Handler
     async function handleAuthSubmit(e) {
       e.preventDefault();
+      const submitBtn = document.getElementById('authSubmitBtn');
+      const loader = setButtonLoading(submitBtn, currentAuthMode === 'signup' ? 'Creating Account...' : 'Logging In...');
       const email = document.getElementById('authEmail').value.trim().toLowerCase();
       const password = document.getElementById('authPassword').value;
       const passwordHash = await hashPassword(password);
@@ -400,7 +438,9 @@
         closeAuthModal();
         renderSession();
       } catch (err) {
-        showToast(err.message);
+        showToast(err.message || 'operation failed');
+      }finally{
+        loader.restore();
       }
     }
 
@@ -423,6 +463,8 @@
     // Course Creation (Teachers)
     async function handleCreateCourse(e) {
       e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const loader = setButtonLoading(submitBtn, 'Publishing...');
       const title = document.getElementById('courseTitle').value.trim();
       const code = document.getElementById('courseCode').value.trim();
 
@@ -439,7 +481,9 @@
         loadTeacherCourses();
       } catch (err) {
         showToast('Error creating course: ' + err.message);
-      }
+      }finally {
+    loader.restore();
+  }
     }
 
     // Post an Assignment
