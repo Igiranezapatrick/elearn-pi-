@@ -14,10 +14,9 @@
     font-src 'self' data:;
   ">
 
-  <!-- Favicon link -->
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
-  
+
   <meta name="description" content="Production-ready e-learning ecosystem powered by Bika Database. Manage lessons, track assignments, and collaborate seamlessly.">
   <meta name="author" content="Pi Tech">
 
@@ -26,6 +25,7 @@
       --primary: #0284c7;
       --primary-hover: #0369a1;
       --accent: #10b981;
+      --warning: #f59e0b;
       --dark: #0f172a;
       --dark-card: #1e293b;
       --light-bg: #f8fafc;
@@ -46,12 +46,15 @@
     .nav-links a:hover { color: var(--primary); }
 
     /* Buttons */
-    .btn { padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn { padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-hover); }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
     .btn-outline:hover { background: #f1f5f9; }
     .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: #059669; }
+    .btn-momo { background: #facc15; color: #0f172a; font-weight: 700; }
+    .btn-momo:hover { background: #eab308; }
 
     /* Layout Containers */
     .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
@@ -65,7 +68,7 @@
     .hero-stats { display: flex; gap: 32px; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); }
     .stat-item h3 { font-size: 26px; color: var(--primary); font-weight: 700; }
     .stat-item p { font-size: 13px; color: var(--text-muted); margin: 0; }
-    .hero-image-wrap { border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15); border: 1px solid var(--border); }
+    .hero-image-wrap { border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15); border: 1px solid var(--border); background: #fff; }
     .hero-image-wrap img { width: 100%; height: auto; display: block; object-fit: cover; }
 
     /* Features / About Section */
@@ -78,16 +81,16 @@
     .card h3 { font-size: 20px; color: var(--dark); margin: 16px 0 8px; }
     .card p { color: var(--text-muted); font-size: 14px; }
 
-    /* Auth Modal */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 200; }
-    .modal-box { background: #fff; width: 100%; max-width: 440px; border-radius: 12px; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .modal-header h3 { font-size: 22px; color: var(--dark); }
-    .close-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-muted); }
-    
-    .form-group { margin-bottom: 16px; }
+    /* Modals */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 16px; }
+    .modal-box { background: #fff; width: 100%; max-width: 480px; border-radius: 12px; padding: 28px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15); max-height: 90vh; overflow-y: auto; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-header h3 { font-size: 20px; color: var(--dark); }
+    .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); line-height: 1; }
+
+    .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 6px; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); }
 
     /* Dashboard Layout */
@@ -97,34 +100,16 @@
     .tag { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
     .tag-teacher { background: #e0f2fe; color: #0369a1; }
     .tag-student { background: #dcfce7; color: #15803d; }
+    .tag-locked { background: #fef3c7; color: #b45309; }
 
-    /* Tables */
-    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
-    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
-    th { background: #f8fafc; font-weight: 600; color: var(--text-muted); }
+    .course-form-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .status-banner { background: #fffbeb; border: 1px solid #fcd34d; color: #92400e; padding: 12px 14px; border-radius: 8px; font-size: 13px; margin: 14px 0; }
+    .lesson-content-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-size: 14px; white-space: pre-wrap; line-height: 1.7; margin-top: 12px; }
 
     /* Button Loading State */
-.btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-.spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  display: inline-block;
-  animation: bika-spin 0.7s linear infinite;
-  vertical-align: middle;
-}
-
-@keyframes bika-spin {
-  to {
-    transform: rotate(360deg);
-  }
-} 
+    .btn:disabled { opacity: 0.65; cursor: not-allowed; }
+    .spinner { width: 14px; height: 14px; border: 2px solid rgba(255, 255, 255, 0.4); border-top-color: #ffffff; border-radius: 50%; display: inline-block; animation: bika-spin 0.7s linear infinite; vertical-align: middle; }
+    @keyframes bika-spin { to { transform: rotate(360deg); } }
 
     /* Footer */
     footer { background: var(--dark); color: #94a3b8; padding: 60px 0 30px; margin-top: 60px; font-size: 14px; }
@@ -137,8 +122,7 @@
     #toast.show { opacity: 1; pointer-events: auto; }
 
     @media (max-width: 768px) {
-      .hero-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
+      .hero-grid, .footer-grid, .course-form-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -165,16 +149,15 @@
 
   <!-- ================= LANDING PAGE VIEW ================= -->
   <div id="landingView">
-    <!-- Hero Section -->
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-content">
           <h1>Empowering Modern Education with Real-Time Learning</h1>
           <p>
-            SomaLearn connects passionate educators and motivated students across Rwanda. Distribute coursework, manage assignments, and record evaluations effortlessly.
+            PI Elearning connects passionate educators and motivated students across Rwanda. Distribute coursework, unlock premium modules via MTN MoMo, and record evaluations effortlessly.
           </p>
           <div style="display: flex; gap: 14px;">
-            <button class="btn btn-primary" onclick="openAuthModal('signup')">Start Learning Free</button>
+            <button class="btn btn-primary" onclick="openAuthModal('signup')">Start Learning</button>
             <a href="#about" class="btn btn-outline" style="text-decoration:none;">Explore Platform</a>
           </div>
           <div class="hero-stats">
@@ -187,19 +170,18 @@
               <p>Flat-File Architecture</p>
             </div>
             <div class="stat-item">
-              <h3>24/7</h3>
-              <p>Offline-First Access</p>
+              <h3>MoMo Pay</h3>
+              <p>Instant Course Unlock</p>
             </div>
           </div>
         </div>
 
         <div class="hero-image-wrap">
-          <Image src="learners.jpg" alt="African students collaborating on laptops in a modern educational environment" caption="Modern digital e-learning in action" />
+          <img src="learners.jpg" alt="Rwandan students collaborating on laptops in a modern educational environment" />
         </div>
       </div>
     </section>
 
-    <!-- About Platform Section -->
     <section id="about" class="section">
       <div class="container">
         <div class="section-title">
@@ -210,11 +192,11 @@
         <div class="grid-3">
           <div class="card">
             <h3>Designed for Teachers</h3>
-            <p>Publish curriculum modules, assign project deadlines, and assess student submissions from an intuitive control center.</p>
+            <p>Publish paid or free curriculum modules, attach structured lessons, assign deadlines, and track student submissions.</p>
           </div>
           <div class="card">
-            <h3>Student-First Workspaces</h3>
-            <p>Direct access to enrolled course materials, structured homework briefs, and submission tracking with instant confirmation.</p>
+            <h3>Instant MTN MoMo Access</h3>
+            <p>Students pay course fees via MTN Mobile Money and unlock lessons automatically as soon as payment arrives.</p>
           </div>
           <div class="card">
             <h3>Powered by Bika Database</h3>
@@ -224,7 +206,6 @@
       </div>
     </section>
 
-    <!-- Creator Spotlight -->
     <section id="creator" class="section" style="background: #ffffff; border-top: 1px solid var(--border);">
       <div class="container" style="max-width: 800px; text-align: center;">
         <h2 style="font-size: 28px; margin-bottom: 12px;">Engineered by Pi Tech</h2>
@@ -235,11 +216,10 @@
       </div>
     </section>
 
-    <!-- Footer -->
     <footer>
       <div class="container footer-grid">
         <div>
-          <div class="footer-brand">SomaLearn</div>
+          <div class="footer-brand">PI Elearning</div>
           <p style="max-width: 320px;">Empowering TVET institutes and high schools through decentralized e-learning solutions.</p>
         </div>
         <div>
@@ -254,7 +234,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        &copy; 2026 SomaLearn. Developed by Pi Tech. All rights reserved.
+        &copy; 2026 PI Elearning. Developed by Pi Tech. All rights reserved.
       </div>
     </footer>
   </div>
@@ -263,14 +243,14 @@
   <div id="authModal" class="modal-overlay hidden">
     <div class="modal-box">
       <div class="modal-header">
-        <h3 id="authModalTitle">Sign Up for SomaLearn</h3>
+        <h3 id="authModalTitle">Sign Up for PI Elearning</h3>
         <button class="close-btn" onclick="closeAuthModal()">&times;</button>
       </div>
 
       <form id="authForm" onsubmit="handleAuthSubmit(event)">
         <div class="form-group" id="fullNameGroup">
           <label>Full Name</label>
-          <input type="text" id="authFullName" placeholder="e.g. Patrick Mugabo">
+          <input type="text" id="authFullName" placeholder="e.g. Patrick Igiraneza">
         </div>
 
         <div class="form-group">
@@ -301,12 +281,99 @@
     </div>
   </div>
 
+  <!-- ================= ADD ASSIGNMENT MODAL (REPLACES PROMPT) ================= -->
+  <div id="assignmentModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Post New Assignment</h3>
+        <button class="close-btn" onclick="closeModal('assignmentModal')">&times;</button>
+      </div>
+      <form onsubmit="handleAddAssignmentSubmit(event)">
+        <input type="hidden" id="assignCourseId">
+        <div class="form-group">
+          <label>Assignment Title</label>
+          <input type="text" id="assignTitle" placeholder="e.g. Build a REST API with Express" required>
+        </div>
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="text" id="assignDueDate" value="Next Friday 5:00 PM" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="assignSubmitBtn">Publish Assignment</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= SUBMIT WORK MODAL (REPLACES PROMPT) ================= -->
+  <div id="submissionModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Submit Deliverable</h3>
+        <button class="close-btn" onclick="closeModal('submissionModal')">&times;</button>
+      </div>
+      <form onsubmit="handleWorkSubmit(event)">
+        <input type="hidden" id="submitAssignId">
+        <div class="form-group">
+          <label>Project Repository or Document Link</label>
+          <input type="url" id="submitWorkLink" placeholder="https://github.com/username/project" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="workSubmitBtn">Confirm Submission</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MOMO PAYMENT MODAL ================= -->
+  <div id="momoPayModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Unlock Course via MTN MoMo</h3>
+        <button class="close-btn" onclick="closeMomoModal()">&times;</button>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 16px;">
+        <div style="font-weight: 700; color: var(--dark);" id="payCourseTitle"></div>
+        <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+          Course Fee: <strong style="color: var(--primary); font-size: 16px;" id="payCourseFee"></strong> <strong>RWF</strong>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+          Send the exact fee via MTN MoMo to the platform receiver number, then enter your sender phone number below to verify automatically.
+        </p>
+      </div>
+
+      <form onsubmit="handleMomoVerification(event)">
+        <div class="form-group">
+          <label>Your MTN MoMo Phone Number</label>
+          <input type="tel" id="studentMomoPhone" placeholder="e.g. 0788123488" required>
+        </div>
+
+        <div id="momoPollStatus" class="status-banner hidden"></div>
+
+        <button type="submit" class="btn btn-momo" style="width: 100%;" id="momoVerifyBtn">
+          Verify Payment & Unlock Course
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= COURSE LESSON READER MODAL ================= -->
+  <div id="lessonReaderModal" class="modal-overlay hidden">
+    <div class="modal-box" style="max-width: 640px;">
+      <div class="modal-header">
+        <div>
+          <span class="tag tag-student" style="margin-bottom: 6px;">Enrolled & Unlocked</span>
+          <h3 id="readerCourseTitle"></h3>
+        </div>
+        <button class="close-btn" onclick="closeModal('lessonReaderModal')">&times;</button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted);" id="readerInstructor"></p>
+      <div class="lesson-content-box" id="readerCourseContent"></div>
+    </div>
+  </div>
+
   <!-- ================= DASHBOARD VIEW ================= -->
   <div id="dashboardView" class="hidden">
-    <!-- Header -->
     <div class="dashboard-header">
       <div>
-        <h2>PI ELearning Portal</h2>
+        <h2>PI Elearning Portal</h2>
         <small style="color: var(--text-muted);">Signed in as <strong id="dashUserName"></strong></small>
       </div>
       <div id="dashRoleAction"></div>
@@ -316,13 +383,28 @@
       <!-- TEACHER VIEW -->
       <div id="teacherPortal" class="hidden">
         <div class="panel-card">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3>Create a New Course Module</h3>
-          </div>
-          <form id="createCourseForm" onsubmit="handleCreateCourse(event)" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 12px; margin-top: 16px;">
-            <input type="text" id="courseTitle" placeholder="Course Title (e.g. Mobile App Dev with Flutter)" required>
-            <input type="text" id="courseCode" placeholder="Code (e.g. SOD-401)" required>
-            <button type="submit" class="btn btn-primary">+ Add Course</button>
+          <h3>Publish a New Course</h3>
+          <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Set a fee in RWF (e.g., 5000) to gate student access behind MTN MoMo verification, or 0 for free access.</p>
+          <form id="createCourseForm" onsubmit="handleCreateCourse(event)">
+            <div class="course-form-grid">
+              <div class="form-group">
+                <label>Course Title</label>
+                <input type="text" id="courseTitle" placeholder="e.g. Full-Stack Mobile Money APIs" required>
+              </div>
+              <div class="form-group">
+                <label>Course Code</label>
+                <input type="text" id="courseCode" placeholder="e.g. SOD-401" required>
+              </div>
+              <div class="form-group">
+                <label>Price (RWF)</label>
+                <input type="number" id="coursePrice" value="5000" min="0" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Course Lesson Content (Unlocked after student payment)</label>
+              <textarea id="courseLessonContent" rows="4" placeholder="Module 1: Introduction & Setup...&#10;Module 2: Webhook Verification & Database Sync..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="publishCourseBtn">+ Publish Course</button>
           </form>
         </div>
 
@@ -337,10 +419,10 @@
       <!-- STUDENT VIEW -->
       <div id="studentPortal" class="hidden">
         <div class="panel-card">
-          <h3>Enrolled Course Work</h3>
-          <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Browse active lessons and submit completed deliverables.</p>
+          <h3>Available & Enrolled Courses</h3>
+          <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Unlock paid courses via MTN MoMo to access lesson content and submit deliverables.</p>
           <div id="studentCoursesContainer">
-            <p style="color: var(--text-muted);">Loading assignments from Bika Database...</p>
+            <p style="color: var(--text-muted);">Loading courses from Bika Database...</p>
           </div>
         </div>
       </div>
@@ -349,11 +431,12 @@
 
   <div id="toast"></div>
 
-  <!-- Scripts -->
   <script src="bika-config.js"></script>
   <script>
     let currentAuthMode = 'signup';
     let currentUser = JSON.parse(localStorage.getItem('somalearn_user')) || null;
+    let activePayCourse = null;
+    let momoPollTimer = null;
 
     function showToast(message) {
       const toast = document.getElementById('toast');
@@ -362,11 +445,20 @@
       setTimeout(() => toast.classList.remove('show'), 3500);
     }
 
-    // Modal Control
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function closeMomoModal() {
+      if (momoPollTimer) clearInterval(momoPollTimer);
+      closeModal('momoPayModal');
+    }
+
+    // Auth Modal Control
     function openAuthModal(mode) {
       currentAuthMode = mode;
       const isSignup = mode === 'signup';
-      document.getElementById('authModalTitle').innerText = isSignup ? 'Sign Up for SomaLearn' : 'Log In to SomaLearn';
+      document.getElementById('authModalTitle').innerText = isSignup ? 'Sign Up for PI Elearning' : 'Log In to PI Elearning';
       document.getElementById('authSubmitBtn').innerText = isSignup ? 'Create Account' : 'Log In';
       document.getElementById('fullNameGroup').classList.toggle('hidden', !isSignup);
       document.getElementById('roleGroup').classList.toggle('hidden', !isSignup);
@@ -387,7 +479,6 @@
       const originalHtml = buttonElement.innerHTML;
       buttonElement.disabled = true;
       buttonElement.innerHTML = `<span class="spinner"></span> <span>${loadingText}</span>`;
-    
       return {
         restore: () => {
           buttonElement.disabled = false;
@@ -396,7 +487,6 @@
       };
     }
 
-    // Simple hash for password demo storage
     async function hashPassword(str) {
       const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
       return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
@@ -447,8 +537,8 @@
         closeAuthModal();
         renderSession();
       } catch (err) {
-        showToast(err.message || 'operation failed');
-      }finally{
+        showToast(err.message || 'Operation failed');
+      } finally {
         loader.restore();
       }
     }
@@ -472,34 +562,48 @@
     // Course Creation (Teachers)
     async function handleCreateCourse(e) {
       e.preventDefault();
-      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const submitBtn = document.getElementById('publishCourseBtn');
       const loader = setButtonLoading(submitBtn, 'Publishing...');
       const title = document.getElementById('courseTitle').value.trim();
       const code = document.getElementById('courseCode').value.trim();
+      const price = Number(document.getElementById('coursePrice').value) || 0;
+      const content = document.getElementById('courseLessonContent').value.trim();
 
       try {
         await bika.from('courses').insert({
           title,
           code,
+          price,
+          content,
           teacherId: currentUser.id,
           teacherName: currentUser.fullName
         });
 
         document.getElementById('createCourseForm').reset();
-        showToast(`Course ${code} published!`);
+        document.getElementById('coursePrice').value = '5000';
+        showToast(`Course ${code} published (${price} RWF)!`);
         loadTeacherCourses();
       } catch (err) {
         showToast('Error creating course: ' + err.message);
-      }finally {
-    loader.restore();
-  }
+      } finally {
+        loader.restore();
+      }
     }
 
-    // Post an Assignment
-    async function promptAddAssignment(courseId) {
-      const title = prompt('Assignment Title:');
-      if (!title) return;
-      const dueDate = prompt('Due Date (e.g. Friday 5:00 PM):', 'Next Friday');
+    // Open Assignment Modal (Real Form)
+    function openAssignmentModal(courseId) {
+      document.getElementById('assignCourseId').value = courseId;
+      document.getElementById('assignTitle').value = '';
+      document.getElementById('assignmentModal').classList.remove('hidden');
+    }
+
+    async function handleAddAssignmentSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('assignSubmitBtn');
+      const loader = setButtonLoading(btn, 'Saving...');
+      const courseId = document.getElementById('assignCourseId').value;
+      const title = document.getElementById('assignTitle').value.trim();
+      const dueDate = document.getElementById('assignDueDate').value.trim();
 
       try {
         await bika.from('assignments').insert({
@@ -508,10 +612,13 @@
           dueDate: dueDate || 'TBD',
           submissions: []
         });
+        closeModal('assignmentModal');
         showToast('Assignment added to course!');
         loadTeacherCourses();
       } catch (err) {
         showToast(err.message);
+      } finally {
+        loader.restore();
       }
     }
 
@@ -530,17 +637,18 @@
         container.innerHTML = '';
         courses.forEach(c => {
           const courseAssignments = (assignments || []).filter(a => a.courseId === c.id);
+          const feeLabel = Number(c.price) > 0 ? `${c.price} RWF` : 'FREE';
           const div = document.createElement('div');
           div.style = 'border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 12px;';
           div.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <h4>${c.title} <span class="tag tag-teacher">${c.code}</span></h4>
-              <button class="btn btn-outline" style="font-size:12px; padding:4px 10px;" onclick="promptAddAssignment('${c.id}')">+ Add Assignment</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <h4>${c.title} <span class="tag tag-teacher">${c.code}</span> <span class="tag tag-student">${feeLabel}</span></h4>
+              <button class="btn btn-outline" style="font-size:12px; padding:6px 12px;" onclick="openAssignmentModal('${c.id}')">+ Add Assignment</button>
             </div>
             <div style="margin-top: 10px; font-size: 13px;">
               <strong>Assignments:</strong>
-              ${courseAssignments.length === 0 
-                ? '<span style="color:var(--text-muted)"> No assignments posted yet.</span>' 
+              ${courseAssignments.length === 0
+                ? '<span style="color:var(--text-muted)"> No assignments posted yet.</span>'
                 : `<ul style="margin: 6px 0 0 20px;">${courseAssignments.map(a => `<li>${a.title} (Due: ${a.dueDate}) — <em>${(a.submissions || []).length} submissions</em></li>`).join('')}</ul>`
               }
             </div>
@@ -552,30 +660,140 @@
       }
     }
 
-    // Load Student Data & Submission
+    // Student Payment & Course Unlock Flow
+    function openMomoModal(course) {
+      activePayCourse = course;
+      document.getElementById('payCourseTitle').innerText = `${course.title} (${course.code})`;
+      document.getElementById('payCourseFee').innerText = course.price;
+      document.getElementById('momoPollStatus').classList.add('hidden');
+      document.getElementById('momoPayModal').classList.remove('hidden');
+    }
+
+    async function handleMomoVerification(e) {
+      e.preventDefault();
+      if (!activePayCourse) return;
+
+      const phone = document.getElementById('studentMomoPhone').value.trim();
+      const suffix = phone.slice(-3);
+      const expectedAmount = Number(activePayCourse.price);
+      const statusBox = document.getElementById('momoPollStatus');
+
+      statusBox.classList.remove('hidden');
+      statusBox.innerText = `Listening for ${expectedAmount} RWF from phone ending in *${suffix}... Trigger payment from PC now!`;
+
+      // Snapshot existing transaction IDs so we detect the new payment
+      let existingTxs = [];
+      try {
+        existingTxs = await bika.from('momo_transactions').select();
+      } catch (_) {}
+      const seenTxIds = new Set((existingTxs || []).map(t => String(t.transaction_id)));
+
+      if (momoPollTimer) clearInterval(momoPollTimer);
+      momoPollTimer = setInterval(async () => {
+        try {
+          const latestTxs = await bika.from('momo_transactions').select();
+          const matchedTx = (latestTxs || []).find(t =>
+            !seenTxIds.has(String(t.transaction_id)) &&
+            Number(t.amount) === expectedAmount &&
+            (!t.phone_suffix || String(t.phone_suffix) === suffix)
+          );
+
+          if (matchedTx) {
+            clearInterval(momoPollTimer);
+
+            // Save confirmed enrollment in Bika's enrollments table
+            await bika.from('enrollments').insert({
+              studentId: currentUser.id,
+              studentName: currentUser.fullName,
+              courseId: activePayCourse.id,
+              courseTitle: activePayCourse.title,
+              transactionId: matchedTx.transaction_id,
+              amountPaid: expectedAmount,
+              status: 'paid'
+            });
+
+            const unlockedCourse = activePayCourse;
+            closeMomoModal();
+            showToast(`Payment confirmed (Tx: ${matchedTx.transaction_id})! Course unlocked.`);
+            await loadStudentCourses();
+            openLessonReader(unlockedCourse);
+          }
+        } catch (err) {
+          console.warn('Polling Bika momo_transactions...', err);
+        }
+      }, 3000);
+    }
+
+    function openLessonReader(course) {
+      document.getElementById('readerCourseTitle').innerText = `${course.title} (${course.code})`;
+      document.getElementById('readerInstructor').innerText = `Instructor: ${course.teacherName || 'Pi Tech Faculty'}`;
+      document.getElementById('readerCourseContent').innerText = course.content || 'Welcome to this course! Lesson modules are active.';
+      document.getElementById('lessonReaderModal').classList.remove('hidden');
+    }
+
+    // Load Student Data & Enrollment Check
     async function loadStudentCourses() {
       const container = document.getElementById('studentCoursesContainer');
       try {
         const courses = await bika.from('courses').select();
         const assignments = await bika.from('assignments').select();
+        let enrollments = [];
+        try {
+          enrollments = await bika.from('enrollments').select({ studentId: currentUser.id });
+        } catch (_) {}
 
         if (!courses || courses.length === 0) {
           container.innerHTML = '<p style="color:var(--text-muted)">No active courses found on the platform.</p>';
           return;
         }
 
+        const enrolledCourseIds = new Set(
+          (enrollments || []).filter(en => en.status === 'paid').map(en => String(en.courseId))
+        );
+
         container.innerHTML = '';
         courses.forEach(c => {
+          const price = Number(c.price) || 0;
+          const isUnlocked = price === 0 || enrolledCourseIds.has(String(c.id));
           const courseAssignments = (assignments || []).filter(a => a.courseId === c.id);
+
           const div = document.createElement('div');
           div.style = 'border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 16px; background:#fff;';
-          div.innerHTML = `
-            <h3>${c.title} <span class="tag tag-student">${c.code}</span></h3>
-            <p style="color:var(--text-muted); font-size:13px; margin: 4px 0 12px;">Instructor: ${c.teacherName}</p>
+
+          const headerDiv = document.createElement('div');
+          headerDiv.style = 'display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;';
+          headerDiv.innerHTML = `
             <div>
-              <strong>Available Assignments:</strong>
-              ${courseAssignments.length === 0 
-                ? '<p style="color:var(--text-muted); font-size:13px; margin-top:4px;">No pending assignments.</p>' 
+              <h3>${c.title} <span class="tag tag-student">${c.code}</span>
+                ${isUnlocked
+                  ? '<span class="tag tag-student">Unlocked</span>'
+                  : `<span class="tag tag-locked">${price} RWF</span>`
+                }
+              </h3>
+              <p style="color:var(--text-muted); font-size:13px; margin-top:4px;">Instructor: ${c.teacherName}</p>
+            </div>
+          `;
+
+          const actionBtn = document.createElement('button');
+          if (isUnlocked) {
+            actionBtn.className = 'btn btn-accent';
+            actionBtn.innerText = 'Open Lessons';
+            actionBtn.onclick = () => openLessonReader(c);
+          } else {
+            actionBtn.className = 'btn btn-momo';
+            actionBtn.innerText = `Pay ${price} RWF via MoMo`;
+            actionBtn.onclick = () => openMomoModal(c);
+          }
+          headerDiv.appendChild(actionBtn);
+          div.appendChild(headerDiv);
+
+          if (isUnlocked) {
+            const assignWrap = document.createElement('div');
+            assignWrap.style = 'margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border);';
+            assignWrap.innerHTML = `
+              <strong>Course Assignments:</strong>
+              ${courseAssignments.length === 0
+                ? '<p style="color:var(--text-muted); font-size:13px; margin-top:4px;">No pending assignments.</p>'
                 : courseAssignments.map(a => {
                     const submitted = (a.submissions || []).some(s => s.studentId === currentUser.id);
                     return `
@@ -583,27 +801,38 @@
                         <div>
                           <strong>${a.title}</strong> <span style="font-size:12px; color:var(--text-muted);">(Due: ${a.dueDate})</span>
                         </div>
-                        ${submitted 
-                          ? '<span class="tag tag-student">Submitted</span>' 
-                          : `<button class="btn btn-primary" style="font-size:12px; padding:4px 10px;" onclick="submitAssignment('${a.id}')">Submit Work</button>`
+                        ${submitted
+                          ? '<span class="tag tag-student">Submitted</span>'
+                          : `<button class="btn btn-primary" style="font-size:12px; padding:4px 10px;" onclick="openSubmissionModal('${a.id}')">Submit Work</button>`
                         }
                       </div>
                     `;
                   }).join('')
               }
-            </div>
-          `;
+            `;
+            div.appendChild(assignWrap);
+          }
+
           container.appendChild(div);
         });
       } catch (err) {
-        container.innerHTML = '<p style="color:red">Could not load assignments.</p>';
+        container.innerHTML = '<p style="color:red">Could not load courses.</p>';
       }
     }
 
-    // Submit Student Work
-    async function submitAssignment(assignmentId) {
-      const workLink = prompt('Enter your project repository or document link (e.g. GitHub or Google Drive link):');
-      if (!workLink) return;
+    // Open Submission Modal (Real Form)
+    function openSubmissionModal(assignmentId) {
+      document.getElementById('submitAssignId').value = assignmentId;
+      document.getElementById('submitWorkLink').value = '';
+      document.getElementById('submissionModal').classList.remove('hidden');
+    }
+
+    async function handleWorkSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('workSubmitBtn');
+      const loader = setButtonLoading(btn, 'Submitting...');
+      const assignmentId = document.getElementById('submitAssignId').value;
+      const workLink = document.getElementById('submitWorkLink').value.trim();
 
       try {
         const [assignment] = await bika.from('assignments').select({ id: assignmentId });
@@ -616,14 +845,16 @@
         });
 
         await bika.from('assignments').update(assignmentId, { submissions });
+        closeModal('submissionModal');
         showToast('Assignment submitted successfully!');
         loadStudentCourses();
       } catch (err) {
         showToast('Submission error: ' + err.message);
+      } finally {
+        loader.restore();
       }
     }
 
-    // Render active session view
     function renderSession() {
       const isAuth = !!currentUser;
       document.getElementById('publicNav').classList.toggle('hidden', isAuth);
@@ -634,7 +865,7 @@
       if (isAuth) {
         document.getElementById('navUserName').innerText = currentUser.fullName;
         document.getElementById('dashUserName').innerText = `${currentUser.fullName} (${currentUser.role})`;
-        
+
         const badge = document.getElementById('navUserBadge');
         badge.innerText = currentUser.role;
         badge.className = `tag tag-${currentUser.role}`;
@@ -651,7 +882,6 @@
       }
     }
 
-    // Initialize session state on page load
     renderSession();
   </script>
 </body>
